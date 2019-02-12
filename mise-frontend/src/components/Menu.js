@@ -1,16 +1,116 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-const url = 'http://localhost:3001/data/realtime';
+const sidoList = [
+  {
+    id: 'seoul',
+    name: '서울',
+    image: 'https://ak6.picdn.net/shutterstock/videos/20766046/thumb/1.jpg'
+  },
+  {
+    id: 'busan',
+    name: '부산',
+    image: 'https://www.mcst.go.kr/attachFiles/cultureInfoCourt/localFestival/notifyFestival/1523839838562.jpg'
+  },
+  {
+    id: 'daegu',
+    name: '대구',
+    image: 'http://cfile209.uf.daum.net/image/20192A4D4FFA2FD018C65E'
+  },
+  {
+    id: 'incheon',
+    name: '인천',
+    image: 'https://ak6.picdn.net/shutterstock/videos/20766046/thumb/1.jpg'
+  },
+  {
+    id: 'gwangju',
+    name: '광주',
+    image: 'https://ak6.picdn.net/shutterstock/videos/20766046/thumb/1.jpg'
+  },
+  {
+    id: 'daejeon',
+    name: '대전',
+    image: 'https://ak6.picdn.net/shutterstock/videos/20766046/thumb/1.jpg'
+  },
+  {
+    id: 'ulsan',
+    name: '울산',
+    image: 'https://ak6.picdn.net/shutterstock/videos/20766046/thumb/1.jpg'
+  },
+  {
+    id: 'gyeonggi',
+    name: '경기',
+    image: 'https://ak6.picdn.net/shutterstock/videos/20766046/thumb/1.jpg'
+  },
+  {
+    id: 'gangwon',
+    name: '강원',
+    image: 'https://ak6.picdn.net/shutterstock/videos/20766046/thumb/1.jpg'
+  },
+  {
+    id: 'chungbuk',
+    name: '충북',
+    image: 'https://ak6.picdn.net/shutterstock/videos/20766046/thumb/1.jpg'
+  },
+  {
+    id: 'chungnam',
+    name: '충남',
+    image: 'https://ak6.picdn.net/shutterstock/videos/20766046/thumb/1.jpg'
+  },
+  {
+    id: 'jeonbuk',
+    name: '전북',
+    image: 'https://ak6.picdn.net/shutterstock/videos/20766046/thumb/1.jpg'
+  },
+  {
+    id: 'jeonnam',
+    name: '전남',
+    image: 'https://ak6.picdn.net/shutterstock/videos/20766046/thumb/1.jpg'
+  },
+  {
+    id: 'gyeongbuk',
+    name: '경북',
+    image: 'https://ak6.picdn.net/shutterstock/videos/20766046/thumb/1.jpg'
+  },
+  {
+    id: 'gyeongnam',
+    name: '경남',
+    image: 'https://ak6.picdn.net/shutterstock/videos/20766046/thumb/1.jpg'
+  },
+  {
+    id: 'jeju',
+    name: '제주',
+    image: 'https://ak6.picdn.net/shutterstock/videos/20766046/thumb/1.jpg'
+  },
+  {
+    id: 'sejong',
+    name: '세종',
+    image: 'https://ak6.picdn.net/shutterstock/videos/20766046/thumb/1.jpg'
+  }
+]
 
 const MenuList = styled.ul`
-  border: 1px solid #ddd;
+  position: fixed;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: auto;
+  min-width: 180px;
+  border-left: 1px solid #ddd;
 `
 const MenuItem = styled.li`
-  background-color: #fff;
+  /* background-image: url(${props => props.image});
+  background-size: cover;
+  color: #fff; */
   padding: 12px;
+  border-bottom: 1px solid #ddd;
+  &:hover{
+    opacity: 0.9;
+  }
 `
 const MenuItemTitle = styled.h4`
+  font-size: 2em;
+  font-weight: 100;
   margin: 0;
   padding: 0;
 `
@@ -23,43 +123,32 @@ class Menu extends Component {
     }
   }
 
-  componentDidMount(){
-    fetch(url).then(res => res.json().then(json => {
-      console.log(json);
-      this.setState({data: json['list'][0]})
-    }));
+  componentWillReceiveProps(){
+    const sidoData = sidoList.reduce((acc, cur) => {
+      for (let key in this.props.data[0]){
+        if (key === cur.id){
+          acc.push({...cur, pm10: this.props.data[0][key]})          
+        }
+      }
+      return acc;
+    }, [])
+    this.setState({data: sidoData})
   }
-  
+
+  handleClick = (id) => {
+    this.props.onClickSido(id);
+  }
   
   render() {
 
-    const sidoList = [
-      {name: '서울', pm10: this.state.data['seoul']},
-      {name: '부산', pm10: this.state.data['busan']},
-      {name: '대구', pm10: this.state.data['daegu']},
-      {name: '인천', pm10: this.state.data['incheon']},
-      {name: '광주', pm10: this.state.data['gwangju']},
-      {name: '대전', pm10: this.state.data['daejeon']},
-      {name: '울산', pm10: this.state.data['ulsan']},
-      {name: '경기', pm10: this.state.data['gyeonggi']},
-      {name: '강원', pm10: this.state.data['gangwon']},
-      {name: '충북', pm10: this.state.data['chungbuk']},
-      {name: '충남', pm10: this.state.data['chungnam']},
-      {name: '전북', pm10: this.state.data['jeonbuk']},
-      {name: '전남', pm10: this.state.data['jeonnam']},
-      {name: '경북', pm10: this.state.data['gyeongbuk']},
-      {name: '경남', pm10: this.state.data['gyeongnam']},
-      {name: '제주', pm10: this.state.data['jeju']},
-      {name: '세종', pm10: this.state.data['sejong']}
-    ]
-    
     return (
       <MenuList>
-        {sidoList.map((e, i) => {
+        {this.state.data.map((e, i) => {
           return (
-            <MenuItem key={i}>
+            <MenuItem key={i} image={e.image}>
               <MenuItemTitle>{e.name}</MenuItemTitle>
               <p>{e.pm10}</p>
+              <button onClick={() => this.handleClick(e.id)}>보기</button>
             </MenuItem>
           )
         })}
