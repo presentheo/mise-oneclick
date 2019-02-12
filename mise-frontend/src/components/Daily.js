@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import Chart from './Chart';
 
 const url = 'http://localhost:3001/data/daily';
 
 class Daily extends Component {
-
   constructor(props){
     super(props);
     this.state = {
@@ -12,24 +12,21 @@ class Daily extends Component {
   }
 
   componentDidMount(){
-    fetch(url).then(res => res.json().then(json => {
-      console.log(json);
-      this.setState({dailyData: json['list']})
-    }));
+    fetch(url)
+    .then(res => res.json())
+    .then(json => {console.log(json); this.setState({dailyData: json['list']})})
   }
 
   render() {
     return (
       <div>
         <h2>일간 미세먼지 지수</h2>
-        <ul>
-          {this.state.dailyData.map((e,i) => {
-            return <li key={i}>{e['dataTime']} / {e['seoul']}</li>
-          })}
-        </ul>
+        {/* <p>{this.state.dailyData[0]['seoul']}</p> */}
+        <Chart data={this.state.dailyData}></Chart>
       </div>
     );
   }
+
 }
 
 export default Daily;
