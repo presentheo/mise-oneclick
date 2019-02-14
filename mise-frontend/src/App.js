@@ -26,7 +26,7 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      // selectedSido: '',
+      selectedCity: '서울',
       realtimeData: [],
       dailyData: [],
       hourlyData: []
@@ -34,30 +34,32 @@ class App extends Component {
   }
 
   // 상태값 변경
-  fetchDatasToState = () => {
-    fetch(`http://localhost:3001/data/daily`).then(res => res.json()).then(json => this.setState({
-      dailyData: json['list']
-    }))
-    fetch(`http://localhost:3001/data/hourly`).then(res => res.json()).then(json => this.setState({
-      hourlyData: json['list']
-    }))
-    fetch(`http://localhost:3001/data/realtime`).then(res => res.json()).then(json => this.setState({
-      realtimeData: json['list']
-    }))
+  fetchDatasToState = (city) => {
+    fetch(`http://localhost:3001/realtime?city=${encodeURI(city)}`)
+    .then(res => res.text())
+    .then(text => console.log(JSON.parse(text)))
+    // .then(text => this.setState({realtimeData: JSON.parse(text)['list']}))
+
+    fetch(`http://localhost:3001/hourly`)
+    .then(res => res.text())
+    .then(text => console.log(text))
+    // .then(text => this.setState({hourlyData: JSON.parse(text)['list']}))
+
+    fetch(`http://localhost:3001/daily`)
+    .then(res => res.text())
+    .then(text => console.log(text))
+    // .then(text => this.setState({dailyData: JSON.parse(text)['list']}))
   }
   
   // 앱 구동시 초기값
   componentDidMount(){
-    this.fetchDatasToState();
+    this.fetchDatasToState(this.state.selectedCity);
   }
 
-  // componentWillUpdate(){
-  //   this.fetchDatasToState(this.state.selectedSido);
-  // }
-
   // 클릭시 변경
-  handleClick = (sido) => {
-    this.setState({selectedSido: sido})
+  handleClick = (city) => {
+    this.setState({selectedCity: city});
+    this.fetchDatasToState(this.state.selectedCity);
   }
   
   render() {
@@ -72,8 +74,12 @@ class App extends Component {
             onClickSido={this.handleClick}></Menu>
           <RealTime data={this.state.realtimeData}></RealTime>
           <div>
-            <Daily data={this.state.dailyData}></Daily>
-            <Hourly data={this.state.hourlyData}></Hourly>
+            <Daily 
+              data={this.state.dailyData}
+              city={this.state.selectedCity}></Daily>
+            <Hourly
+              data={this.state.hourlyData}
+              city={this.state.selectedCity}></Hourly>
           </div>
         </Container>
         

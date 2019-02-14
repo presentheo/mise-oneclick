@@ -147,8 +147,8 @@ class Menu extends Component {
           return (
             <MenuItem key={i} image={e.image}>
               <MenuItemTitle>{e.name}</MenuItemTitle>
-              <p>{e.pm10}</p>
-              <button onClick={() => this.handleClick(e.id)}>보기</button>
+              <p>미세먼지 지수 : {e.pm10}</p>
+              <button onClick={() => this.handleClick(e.name)}>보기</button>
             </MenuItem>
           )
         })}
