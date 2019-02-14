@@ -3,7 +3,11 @@ import styled from 'styled-components'
 
 const Container = styled.ul`
   display: flex;
+  flex-direction: row-reverse;
   padding: 20px;
+`
+const Value = styled.li`
+  width: 100%;
 `
 const ValueBarBg = styled.div`
   width: 30px;
@@ -30,30 +34,21 @@ const ValueBarFill = styled.div`
   };
   position: absolute;
   bottom: 0;
-
 `
 
 class Chart extends Component {
-
-  constructor(props){
-    super(props);
-    this.state = {
-      data: []
-    }
-  }
-
   render() {
     return (
       <Container>
         {this.props.data.map((e,i) => {
           return (
-            <li key={i}>
+            <Value key={i}>
               <h5>{e['dataTime'].substr(5)}</h5>
               <ValueBarBg>
-                <ValueBarFill val={e['seoul']}/>
+                <ValueBarFill val={e[this.props.city]}/>
               </ValueBarBg>
-              <p>{e['seoul']}</p>
-            </li>
+              <p>{e[this.props.city]}</p>
+            </Value>
           )
         })}
       </Container>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled, {createGlobalStyle} from 'styled-components';
 import { Normalize } from 'styled-normalize';
+import {Col, Row} from 'react-styled-flexboxgrid';
 import Menu from './components/Menu';
 import RealTime from './components/RealTime';
 import Daily from './components/Daily';
@@ -26,7 +27,8 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      selectedCity: '서울',
+      selectedCityId: 'seoul',
+      selectedCityName: '서울',
       realtimeData: [],
       dailyData: [],
       hourlyData: []
@@ -34,32 +36,33 @@ class App extends Component {
   }
 
   // 상태값 변경
-  fetchDatasToState = (city) => {
-    fetch(`http://localhost:3001/realtime?city=${encodeURI(city)}`)
+  fetchRealtimeDatasToState = (cityName) => {
+    // fetch(`http://localhost:3001/realtime`)
+    fetch(`http://localhost:3001/realtime?city=${encodeURI(cityName)}`)
     .then(res => res.text())
-    .then(text => console.log(JSON.parse(text)))
-    // .then(text => this.setState({realtimeData: JSON.parse(text)['list']}))
+    .then(text => this.setState({realtimeData: JSON.parse(text)['list']}))
 
-    fetch(`http://localhost:3001/hourly`)
-    .then(res => res.text())
-    .then(text => console.log(text))
-    // .then(text => this.setState({hourlyData: JSON.parse(text)['list']}))
-
-    fetch(`http://localhost:3001/daily`)
-    .then(res => res.text())
-    .then(text => console.log(text))
-    // .then(text => this.setState({dailyData: JSON.parse(text)['list']}))
   }
   
   // 앱 구동시 초기값
   componentDidMount(){
-    this.fetchDatasToState(this.state.selectedCity);
+    this.fetchRealtimeDatasToState(this.state.selectedCityName);
+    fetch(`http://localhost:3001/hourly`)
+    .then(res => res.text())
+    .then(text => this.setState({hourlyData: JSON.parse(text)['records']}))
+  
+    fetch(`http://localhost:3001/daily`)
+    .then(res => res.text())
+    .then(text => this.setState({dailyData: JSON.parse(text)['records']}))
   }
-
+  
   // 클릭시 변경
-  handleClick = (city) => {
-    this.setState({selectedCity: city});
-    this.fetchDatasToState(this.state.selectedCity);
+  handleClick = (id, name) => {
+    this.setState({
+      selectedCityId: id,
+      selectedCityName: name
+    });
+    this.fetchRealtimeDatasToState(name);
   }
   
   render() {
@@ -71,16 +74,24 @@ class App extends Component {
         <Container>
           <Menu 
             data={this.state.hourlyData}
-            onClickSido={this.handleClick}></Menu>
-          <RealTime data={this.state.realtimeData}></RealTime>
-          <div>
-            <Daily 
-              data={this.state.dailyData}
-              city={this.state.selectedCity}></Daily>
-            <Hourly
-              data={this.state.hourlyData}
-              city={this.state.selectedCity}></Hourly>
-          </div>
+            onClickCity={this.handleClick}></Menu>
+          <Row>
+            <Col md={12}>
+              <RealTime
+                data={this.state.realtimeData}
+                cityName={this.state.selectedCityName}></RealTime>
+            </Col>
+            <Col md={6}>
+              <Daily 
+                data={this.state.dailyData}
+                cityId={this.state.selectedCityId}></Daily>
+            </Col>
+            <Col md={6}>
+              <Hourly
+                data={this.state.hourlyData}
+                cityId={this.state.selectedCityId}></Hourly>
+            </Col>
+          </Row>
         </Container>
         
       </div>

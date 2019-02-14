@@ -1,9 +1,23 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import {Col, Row} from 'react-styled-flexboxgrid';
 
 const RealTimeData = styled.div`
-  border: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 `
+
+// 평균값 구하기
+const average = (arr, key) => {
+  let sum = arr.reduce((acc, cur) => {
+    if (cur[key] === '-'){
+      cur[key] = 0;
+    }
+    console.log(cur[key])
+    acc += cur[key]*1
+    return acc;
+  }, 0)
+  return Math.floor(sum/arr.length)
+}
 
 class RealTime extends Component {
   constructor(props){
@@ -42,21 +56,21 @@ class RealTime extends Component {
     return (
       <RealTimeData>
         <div>
-          <h1>서울</h1>
-          <p>미세먼지 농도 : {this.state.pm10}</p>
-          <ul>{this.props.data.map((e, i) => {
-            return (
-              <li key={i}>
-                <h3>{e.stationName}</h3>
-                <p>{e.dataTime} 기준</p>
-                <p>미세먼지 농도: {e.pm10Value} / {pm10Grade(e.pm10Value)}</p>
-                <p>초미세먼지 농도: {e.pm25Value} / {pm25Grade(e.pm25Value)}</p>
-              </li>
-            )
-          })}</ul>
+          <h1>{`지금 ${this.props.cityName}의 대기상황은`}</h1>
+          <h3>미세먼지 농도 : {average(this.props.data, 'pm10Value')} / {pm10Grade(average(this.props.data, 'pm10Value'))}</h3>
+          <h3>초미세먼지 농도 : {average(this.props.data, 'pm25Value')} / {pm25Grade(average(this.props.data, 'pm25Value'))}</h3>
         </div>
         <div>
-          <h3>측정소별 데이터</h3>
+          {/* <h3>측정소별 데이터</h3>
+          <Row>{this.props.data.map((e, i) => {
+            return (
+              <Col md={2} key={i}>
+                <h3>{e.stationName}</h3>
+                <p>미세먼지 농도: {e.pm10Value} / {pm10Grade(e.pm10Value)}</p>
+                <p>초미세먼지 농도: {e.pm25Value} / {pm25Grade(e.pm25Value)}</p>
+              </Col>
+            )
+          })}</Row> */}
         </div>
       </RealTimeData>
     );

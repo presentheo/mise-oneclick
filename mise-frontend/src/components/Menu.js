@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-const sidoList = [
+const cityList = [
   {
     id: 'seoul',
     name: '서울',
@@ -124,7 +124,7 @@ class Menu extends Component {
   }
 
   componentWillReceiveProps(){
-    const sidoData = sidoList.reduce((acc, cur) => {
+    const cityData = cityList.reduce((acc, cur) => {
       for (let key in this.props.data[0]){
         if (key === cur.id){
           acc.push({...cur, pm10: this.props.data[0][key]})          
@@ -132,11 +132,7 @@ class Menu extends Component {
       }
       return acc;
     }, [])
-    this.setState({data: sidoData})
-  }
-
-  handleClick = (id) => {
-    this.props.onClickSido(id);
+    this.setState({data: cityData})
   }
   
   render() {
@@ -147,8 +143,8 @@ class Menu extends Component {
           return (
             <MenuItem key={i} image={e.image}>
               <MenuItemTitle>{e.name}</MenuItemTitle>
-              <p>미세먼지 지수 : {e.pm10}</p>
-              <button onClick={() => this.handleClick(e.name)}>보기</button>
+              {/* <p>미세먼지 지수 : {e.pm10}</p> */}
+              <button onClick={() => this.props.onClickCity(e.id, e.name)}>보기</button>
             </MenuItem>
           )
         })}

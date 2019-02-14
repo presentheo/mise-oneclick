@@ -7,7 +7,9 @@ class Daily extends Component {
       <div>
         <h2>일간 미세먼지 지수</h2>
         {/* <p>{this.state.dailyData[0]['seoul']}</p> */}
-        <Chart data={this.props.data}></Chart>
+        <Chart 
+          data={this.props.data} 
+          city={this.props.cityId}></Chart>
       </div>
     );
   }

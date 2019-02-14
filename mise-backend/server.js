@@ -33,6 +33,8 @@ const dailyAndHourlyEndpoint = 'http://openapi.airkorea.or.kr/openapi/services/r
 
 app.get('/realtime', (req, res) => {
   // getJson(res, 'realtime', req.query.city)
+
+  // res.sendFile(__dirname+'/db/realtime.json');
   request({
     url: `${realtimeEndpoint}?serviceKey=${serviceKey}&numOfRows=10&pageNo=1&sidoName=${encodeURI(req.query.city)}&ver=1.3&_returnType=json`,
     method: 'GET'
@@ -41,19 +43,21 @@ app.get('/realtime', (req, res) => {
   })
 })
 app.get('/hourly', (req, res) => {
-  request({
-    url: `${dailyAndHourlyEndpoint}?serviceKey=${serviceKey}&numOfRows=12&pageNo=1&itemCode=PM10&dataGubun=HOUR&searchCondition=WEEK&_returnType=json`,
-    method: 'GET'
-  }, (error, response, body) => {
-    res.send(body)
-  })
+  res.sendFile(__dirname + '/db/hourly.json')
+  // request({
+  //   url: `${dailyAndHourlyEndpoint}?serviceKey=${serviceKey}&numOfRows=12&pageNo=1&itemCode=PM10&dataGubun=HOUR&searchCondition=WEEK&_returnType=json`,
+  //   method: 'GET'
+  // }, (error, response, body) => {
+  //   res.send(body)
+  // })
   // getJson(res, 'weekly', '서울')
 })
 app.get('/daily', (req, res) => {
-  request({
-    url: `${dailyAndHourlyEndpoint}?serviceKey=${serviceKey}&numOfRows=7&pageNo=1&itemCode=PM10&dataGubun=DAILY&searchCondition=WEEK&_returnType=json`,
-    method: 'GET'
-  }, (error, response, body) => {
-    res.send(body)
-  })
+  res.sendFile(__dirname+'/db/daily.json')
+  // request({
+  //   url: `${dailyAndHourlyEndpoint}?serviceKey=${serviceKey}&numOfRows=7&pageNo=1&itemCode=PM10&dataGubun=DAILY&searchCondition=WEEK&_returnType=json`,
+  //   method: 'GET'
+  // }, (error, response, body) => {
+  //   res.send(body)
+  // })
 })

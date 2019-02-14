@@ -7,7 +7,9 @@ class Hourly extends Component {
     return (
       <div>
         <h2>시간별 미세먼지 지수</h2>
-        <Chart data={this.props.data}></Chart>
+        <Chart 
+          data={this.props.data}
+          city={this.props.cityId}></Chart>
       </div>
     );
   }
