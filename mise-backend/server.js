@@ -34,13 +34,13 @@ const dailyAndHourlyEndpoint = 'http://openapi.airkorea.or.kr/openapi/services/r
 app.get('/realtime', (req, res) => {
   // getJson(res, 'realtime', req.query.city)
 
-  // res.sendFile(__dirname+'/db/realtime.json');
-  request({
-    url: `${realtimeEndpoint}?serviceKey=${serviceKey}&numOfRows=10&pageNo=1&sidoName=${encodeURI(req.query.city)}&ver=1.3&_returnType=json`,
-    method: 'GET'
-  }, (error, response, body) => {
-    res.send(body)
-  })
+  res.sendFile(__dirname+'/db/realtime.json');
+  // request({
+  //   url: `${realtimeEndpoint}?serviceKey=${serviceKey}&numOfRows=10&pageNo=1&sidoName=${encodeURI(req.query.city)}&ver=1.3&_returnType=json`,
+  //   method: 'GET'
+  // }, (error, response, body) => {
+  //   res.send(body);
+  // })
 })
 app.get('/hourly', (req, res) => {
   res.sendFile(__dirname + '/db/hourly.json')

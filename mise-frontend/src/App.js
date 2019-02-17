@@ -37,16 +37,18 @@ class App extends Component {
 
   // 상태값 변경
   fetchRealtimeDatasToState = (cityName) => {
-    // fetch(`http://localhost:3001/realtime`)
-    fetch(`http://localhost:3001/realtime?city=${encodeURI(cityName)}`)
-    .then(res => res.text())
-    .then(text => this.setState({realtimeData: JSON.parse(text)['list']}))
-
+    fetch(`http://localhost:3001/realtime`)
+    // fetch(`http://localhost:3001/realtime?city=${encodeURI(cityName)}`)
+    .then(res => res.json())
+    .then(json => {
+      this.setState({realtimeData: json['records']})
+    })
   }
   
   // 앱 구동시 초기값
   componentDidMount(){
     this.fetchRealtimeDatasToState(this.state.selectedCityName);
+
     fetch(`http://localhost:3001/hourly`)
     .then(res => res.text())
     .then(text => this.setState({hourlyData: JSON.parse(text)['records']}))

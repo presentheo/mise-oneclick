@@ -4,7 +4,6 @@ import styled from 'styled-components'
 const Container = styled.ul`
   display: flex;
   flex-direction: row-reverse;
-  padding: 20px;
 `
 const Value = styled.li`
   width: 100%;
@@ -13,6 +12,8 @@ const ValueBarBg = styled.div`
   width: 30px;
   height: 300px;
   background-color: #fafafa;
+  border-radius: 5px 5px 0 0;
+  box-shadow: inset 2px 2px 4px rgba(0,0,0,0.1);
   position: relative;
 `
 const ValueBarFill = styled.div`
@@ -34,6 +35,7 @@ const ValueBarFill = styled.div`
   };
   position: absolute;
   bottom: 0;
+  border-radius: 3px 3px 0 0;
 `
 
 class Chart extends Component {
