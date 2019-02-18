@@ -11,38 +11,6 @@ const Weak = styled.span`
 `
 const Visual = styled.div`
   padding: 30px;
-  position: relative;
-  height: 20vh;
-  min-height: 300px;
-  background: ${
-    props => {
-      let grade = props.grade;
-      if (grade === '좋음'){return 'linear-gradient(270deg, skyblue, royalblue)'}
-      else if (grade === '보통'){return 'linear-gradient(270deg, limegreen, seagreen)'}
-      else if (grade === '나쁨'){return 'linear-gradient(270deg, khaki, orange)'}
-      else if (grade === '매우나쁨'){return 'linear-gradient(270deg, crimson, tomato)'}
-    }
-  };
-  background-size: 400% 400%;
-  -webkit-animation: animatedGradient 10s ease infinite;
-  -moz-animation: animatedGradient 10s ease infinite;
-  animation: animatedGradient 10s ease infinite;
-
-  @-webkit-keyframes animatedGradient {
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
-  }
-  @-moz-keyframes animatedGradient {
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
-  }
-  @keyframes animatedGradient { 
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
-  }
 `
 const VisualTitle = styled.h1`
   letter-spacing: -10px;
@@ -50,19 +18,19 @@ const VisualTitle = styled.h1`
   color: #fff;
 `
 const InfoTable = styled.ul`
-  background-color: rgba(255,255,255, 1);
   border-radius: 5px;
-  padding: 20px;
   margin-top: 30px;
-  /* color: #fff; */
+  color: #fff;
 `
 const InfoKey = styled.h4`
-  text-align: center;
-  color: #aaa;
+  font-weight: 100;
 `
 const InfoValue = styled.p`
-  text-align: center;
-  font-size: 42px;
+  font-weight: 100;
+  font-size: 60px;
+`
+const InfoGrade = styled.span`
+  font-size: 26px;
 `
 
 const VisualIllust = styled.img`
@@ -129,16 +97,14 @@ class RealTime extends Component {
             <Weak>지금 </Weak>{this.props.cityName}<Weak>의 --------------- 하늘은</Weak>
           </VisualTitle>
           <InfoTable>
-            <Row>
-              <Col>
-                <InfoKey>미세먼지 농도</InfoKey>
-                <InfoValue>30</InfoValue>
-              </Col>
-              <Col>
-                <InfoKey>초미세먼지 농도</InfoKey>
-                <InfoValue>40</InfoValue>
-              </Col>
-            </Row>
+            <div>
+              <InfoKey>미세먼지 농도</InfoKey>
+              <InfoValue>30<InfoGrade>/좋음</InfoGrade></InfoValue>
+            </div>
+            <div>
+              <InfoKey>초미세먼지 농도</InfoKey>
+              <InfoValue>42<InfoGrade>/좋음</InfoGrade></InfoValue>
+            </div>
           </InfoTable>
           <VisualIllust src="http://localhost:3000/images/city.svg" alt="city illust"></VisualIllust>
         </Visual>

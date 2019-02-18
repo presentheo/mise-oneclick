@@ -20,8 +20,43 @@ const GlobalStyle = createGlobalStyle`
 `
 const Container = styled.div`
   display: flex;
-  padding-left: 200px;
 `
+const Content = styled.div`
+  padding-left: 180px;
+  position: relative;
+  min-height: 300px;
+  background: linear-gradient(270deg, skyblue, royalblue);
+  /* background: ${
+    props => {
+      let grade = props.grade;
+      if (grade === '좋음'){return 'linear-gradient(270deg, skyblue, royalblue)'}
+      else if (grade === '보통'){return 'linear-gradient(270deg, limegreen, seagreen)'}
+      else if (grade === '나쁨'){return 'linear-gradient(270deg, khaki, orange)'}
+      else if (grade === '매우나쁨'){return 'linear-gradient(270deg, crimson, tomato)'}
+    }
+  }; */
+  background-size: 400% 400%;
+  -webkit-animation: animatedGradient 10s ease infinite;
+  -moz-animation: animatedGradient 10s ease infinite;
+  animation: animatedGradient 10s ease infinite;
+
+  @-webkit-keyframes animatedGradient {
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+  }
+  @-moz-keyframes animatedGradient {
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+  }
+  @keyframes animatedGradient { 
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+  }
+`
+
 
 class App extends Component {
   constructor(props){
@@ -77,23 +112,25 @@ class App extends Component {
           <Menu 
             data={this.state.hourlyData}
             onClickCity={this.handleClick}></Menu>
-          <Row>
-            <Col md={12}>
-              <RealTime
-                data={this.state.realtimeData}
-                cityName={this.state.selectedCityName}></RealTime>
-            </Col>
-            <Col md={6}>
-              <Daily 
-                data={this.state.dailyData}
-                cityId={this.state.selectedCityId}></Daily>
-            </Col>
-            <Col md={6}>
-              <Hourly
-                data={this.state.hourlyData}
-                cityId={this.state.selectedCityId}></Hourly>
-            </Col>
-          </Row>
+          <Content>
+            <Row>
+              <Col md={12}>
+                <RealTime
+                  data={this.state.realtimeData}
+                  cityName={this.state.selectedCityName}></RealTime>
+              </Col>
+              <Col md={6}>
+                <Daily 
+                  data={this.state.dailyData}
+                  cityId={this.state.selectedCityId}></Daily>
+              </Col>
+              <Col md={6}>
+                <Hourly
+                  data={this.state.hourlyData}
+                  cityId={this.state.selectedCityId}></Hourly>
+              </Col>
+            </Row>
+          </Content>
         </Container>
         
       </div>

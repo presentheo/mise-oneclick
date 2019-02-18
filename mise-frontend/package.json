@@ -6,6 +6,7 @@
     "normalize.css": "^8.0.1",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
+    "react-perfect-scrollbar": "^1.4.4",
     "react-scripts": "2.1.3",
     "react-styled-flexboxgrid": "^3.0.0",
     "styled-components": "^4.1.3",

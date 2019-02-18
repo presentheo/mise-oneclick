@@ -96,16 +96,17 @@ const MenuList = styled.ul`
   left: 0;
   overflow: auto;
   min-width: 180px;
-  border-left: 1px solid #ddd;
+  z-index: 1;
+  background-color: #fff;
 `
+
 const MenuItem = styled.li`
-  /* background-image: url(${props => props.image});
-  background-size: cover;
-  color: #fff; */
-  padding: 12px;
+  padding: 15px 10px 15px 20px;
   border-bottom: 1px solid #ddd;
+  display: flex;
   &:hover{
     opacity: 0.9;
+    cursor: pointer;
   }
 `
 const MenuItemTitle = styled.h4`
@@ -114,7 +115,22 @@ const MenuItemTitle = styled.h4`
   margin: 0;
   padding: 0;
 `
-
+const MenuItemContent = styled.div`
+  margin-left: 20px;
+  padding-left: 10px;
+  border-left: 1px solid #ddd;
+`
+const MenuItemValue = styled.p`
+  font-size: 18px;
+  margin-bottom: 2px;
+`
+const MenuItemGrade = styled.span`
+  background-color: blue;
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-size: 12px;
+  color: #fff;
+`
 class Menu extends Component {
   constructor(props){
     super(props);
@@ -141,10 +157,15 @@ class Menu extends Component {
       <MenuList>
         {this.state.data.map((e, i) => {
           return (
-            <MenuItem key={i} image={e.image}>
+            <MenuItem
+              key={i}
+              image={e.image}
+              onClick={() => this.props.onClickCity(e.id, e.name)}>
               <MenuItemTitle>{e.name}</MenuItemTitle>
-              {/* <p>미세먼지 지수 : {e.pm10}</p> */}
-              <button onClick={() => this.props.onClickCity(e.id, e.name)}>보기</button>
+              <MenuItemContent>
+                <MenuItemValue>23</MenuItemValue>
+                <MenuItemGrade>좋음</MenuItemGrade>
+              </MenuItemContent>
             </MenuItem>
           )
         })}
