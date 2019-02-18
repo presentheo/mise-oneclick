@@ -49,14 +49,22 @@ const VisualTitle = styled.h1`
   font-size: 5rem;
   color: #fff;
 `
-const VisualTable = styled.ul`
-  display: flex;
+const InfoTable = styled.ul`
   background-color: rgba(255,255,255, 1);
   border-radius: 5px;
-  padding: 10px 20px;
+  padding: 20px;
   margin-top: 30px;
   /* color: #fff; */
 `
+const InfoKey = styled.h4`
+  text-align: center;
+  color: #aaa;
+`
+const InfoValue = styled.p`
+  text-align: center;
+  font-size: 42px;
+`
+
 const VisualIllust = styled.img`
   width: 100%;
   position: absolute;
@@ -65,36 +73,31 @@ const VisualIllust = styled.img`
 `
 
 // 미세먼지 등급별 컬러 세트
-const gradeData = {
-  good : {grade: '좋음', color: 'blue', gradientColor: 'skyblue, royalblue'},
-  normal : {grade: '보통', color: 'green', gradientColor: 'limegreen, seagreen'},
-  bad : {grade: '나쁨', color: 'gold', gradientColor: 'khaki, orange'},
-  worst : {grade: '매우나쁨', color: 'red', gradientColor: 'crimson, tomato'}
-}
-// 평균값 구하기
-const average = (arr, key) => {
-  let result = 0;
-  for (let i = 0; i < arr.length; i++){
-    if (arr[i][key] === '-'){
-      arr[i][key] = 0;
-    }
-    result += (arr[i][key])*1
-  }
-  return Math.floor(result/arr.length);
-}
+// const gradeData = {
+//   good : {grade: '좋음', color: 'blue', gradientColor: 'skyblue, royalblue'},
+//   normal : {grade: '보통', color: 'green', gradientColor: 'limegreen, seagreen'},
+//   bad : {grade: '나쁨', color: 'gold', gradientColor: 'khaki, orange'},
+//   worst : {grade: '매우나쁨', color: 'red', gradientColor: 'crimson, tomato'}
+// }
 
 class RealTime extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      cityName: this.props.cityName,
-      data: this.props.data
-    }
+
+  // 평균값 구하기
+  average = (arr, key) => {
+    let result = arr.reduce((acc, cur) => {
+      if (cur[key] === '-'){
+        cur[key] = 0;
+      }
+      acc += cur[key]*1
+      return acc
+    }, 0)
+    result = Math.floor(result/arr.length);
+    return result
   }
 
   // 미세먼지 등급 구하기
   pm10Grade = () => {
-    let value = average(this.state.data, 'pm10Value')
+    let value = this.average(this.props.data, 'pm10Value')
     if (value >= 0 && value <= 30){
       return '좋음'
     }else if (value >= 31 && value <= 80){
@@ -123,19 +126,20 @@ class RealTime extends Component {
       <RealTimeData>
         <Visual grade={this.pm10Grade()}>
           <VisualTitle>
-            <Weak>지금 </Weak>{this.state.cityName}<Weak>의 --------------- 하늘은</Weak>
+            <Weak>지금 </Weak>{this.props.cityName}<Weak>의 --------------- 하늘은</Weak>
           </VisualTitle>
-          <VisualTable>
-            <li>
-              <h4>미세먼지 농도</h4>
-              <p>{average(this.state.data, 'pm10Value')}</p>
-              <p>{this.pm10Grade()}</p>
-            </li>
-            <li>
-              <h4>초미세먼지 농도</h4>
-              {/* {average(this.state.data, 'pm25Value')} / {pm25Grade(average(this.state.data, 'pm25Value'))} */}
-            </li>
-          </VisualTable>
+          <InfoTable>
+            <Row>
+              <Col>
+                <InfoKey>미세먼지 농도</InfoKey>
+                <InfoValue>30</InfoValue>
+              </Col>
+              <Col>
+                <InfoKey>초미세먼지 농도</InfoKey>
+                <InfoValue>40</InfoValue>
+              </Col>
+            </Row>
+          </InfoTable>
           <VisualIllust src="http://localhost:3000/images/city.svg" alt="city illust"></VisualIllust>
         </Visual>
         <div>

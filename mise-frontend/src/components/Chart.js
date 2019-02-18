@@ -7,9 +7,11 @@ const Container = styled.ul`
 `
 const Value = styled.li`
   width: 100%;
+  padding: 0 2px;
+  text-align: center;
 `
 const ValueBarBg = styled.div`
-  width: 30px;
+  width: 100%;
   height: 300px;
   background-color: #fafafa;
   border-radius: 5px 5px 0 0;
@@ -23,7 +25,7 @@ const ValueBarFill = styled.div`
     props => {
       let value = props.val;
       if (value >= 0 && value <= 30){
-        return 'blue'
+        return 'royalblue'
       }else if (value >= 31 && value <= 80){
         return 'green'
       }else if (value >= 81 && value <= 150){
