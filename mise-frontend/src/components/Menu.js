@@ -105,7 +105,7 @@ const MenuItem = styled.li`
   border-bottom: 1px solid #ddd;
   display: flex;
   &:hover{
-    opacity: 0.9;
+    opacity: 0.7;
     cursor: pointer;
   }
 `
@@ -121,15 +121,8 @@ const MenuItemContent = styled.div`
   border-left: 1px solid #ddd;
 `
 const MenuItemValue = styled.p`
-  font-size: 18px;
-  margin-bottom: 2px;
-`
-const MenuItemGrade = styled.span`
-  background-color: blue;
-  padding: 2px 7px;
-  border-radius: 3px;
-  font-size: 12px;
-  color: #fff;
+  font-size: 14px;
+  margin-bottom: 6px;
 `
 class Menu extends Component {
   constructor(props){
@@ -163,8 +156,8 @@ class Menu extends Component {
               onClick={() => this.props.onClickCity(e.id, e.name)}>
               <MenuItemTitle>{e.name}</MenuItemTitle>
               <MenuItemContent>
-                <MenuItemValue>23</MenuItemValue>
-                <MenuItemGrade>좋음</MenuItemGrade>
+                <MenuItemValue>23㎍/m³</MenuItemValue>
+                <span className="badge">좋음</span>
               </MenuItemContent>
             </MenuItem>
           )
