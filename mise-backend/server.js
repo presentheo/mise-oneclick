@@ -43,21 +43,21 @@ app.get('/realtime', (req, res) => {
   // })
 })
 app.get('/hourly', (req, res) => {
-  res.sendFile(__dirname + '/db/hourly.json')
-  // request({
-  //   url: `${dailyAndHourlyEndpoint}?serviceKey=${serviceKey}&numOfRows=12&pageNo=1&itemCode=PM10&dataGubun=HOUR&searchCondition=WEEK&_returnType=json`,
-  //   method: 'GET'
-  // }, (error, response, body) => {
-  //   res.send(body)
-  // })
+  // res.sendFile(__dirname + '/db/hourly.json')
   // getJson(res, 'weekly', '서울')
+  request({
+    url: `${dailyAndHourlyEndpoint}?serviceKey=${serviceKey}&numOfRows=12&pageNo=1&itemCode=PM10&dataGubun=HOUR&searchCondition=WEEK&_returnType=json`,
+    method: 'GET'
+  }, (error, response, body) => {
+    res.send(body)
+  })
 })
 app.get('/daily', (req, res) => {
-  res.sendFile(__dirname+'/db/daily.json')
-  // request({
-  //   url: `${dailyAndHourlyEndpoint}?serviceKey=${serviceKey}&numOfRows=7&pageNo=1&itemCode=PM10&dataGubun=DAILY&searchCondition=WEEK&_returnType=json`,
-  //   method: 'GET'
-  // }, (error, response, body) => {
-  //   res.send(body)
-  // })
+  // res.sendFile(__dirname+'/db/daily.json')
+  request({
+    url: `${dailyAndHourlyEndpoint}?serviceKey=${serviceKey}&numOfRows=7&pageNo=1&itemCode=PM10&dataGubun=DAILY&searchCondition=WEEK&_returnType=json`,
+    method: 'GET'
+  }, (error, response, body) => {
+    res.send(body)
+  })
 })

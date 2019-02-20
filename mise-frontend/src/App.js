@@ -5,6 +5,27 @@ import {Col, Row} from 'react-styled-flexboxgrid';
 import Menu from './components/Menu';
 import RealTime from './components/RealTime';
 import Chart from './components/Chart';
+import { getAverage, getPm10Grade } from './utils';
+
+const cityList = [
+  {id: 'seoul', name: '서울'},
+  {id: 'busan', name: '부산'},
+  {id: 'daegu', name: '대구'},
+  {id: 'incheon', name: '인천'},
+  {id: 'gwangju', name: '광주'},
+  {id: 'daejeon', name: '대전'},
+  {id: 'ulsan', name: '울산'},
+  {id: 'gyeonggi', name: '경기'},
+  {id: 'gangwon', name: '강원'},
+  {id: 'chungbuk', name: '충북'},
+  {id: 'chungnam', name: '충남'},
+  {id: 'jeonbuk', name: '전북'},
+  {id: 'jeonnam', name: '전남'},
+  {id: 'gyeongbuk', name: '경북'},
+  {id: 'gyeongnam', name: '경남'},
+  {id: 'jeju', name: '제주'},
+  {id: 'sejong', name: '세종'}
+]
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,400');
@@ -17,18 +38,25 @@ const GlobalStyle = createGlobalStyle`
     list-style: none;
   }
   .weak{font-weight: 100;}
-  .badge{
-    background-color: blue;
-    padding: 2px 7px;
-    border-radius: 3px;
-    font-size: 12px;
-    color: #fff;
-  }
+`
+export const Badge = styled.span`
+  background-color: ${
+    props => {
+      let grade = props.grade;
+      if (grade === '좋음'){return 'blue'}
+      else if (grade === '보통'){return 'seagreen'}
+      else if (grade === '나쁨'){return 'orange'}
+      else if (grade === '매우나쁨'){return 'crimson'}
+    }
+  };
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-size: 12px;
+  color: #fff;
 `
 const Container = styled.div`
   display: flex;
-  background-image: linear-gradient(270deg, crimson, tomato);
-  /* background: ${
+  background: ${
     props => {
       let grade = props.grade;
       if (grade === '좋음'){return 'linear-gradient(270deg, skyblue, royalblue)'}
@@ -36,7 +64,7 @@ const Container = styled.div`
       else if (grade === '나쁨'){return 'linear-gradient(270deg, khaki, orange)'}
       else if (grade === '매우나쁨'){return 'linear-gradient(270deg, crimson, tomato)'}
     }
-  }; */
+  };
   background-size: 400% 400%;
   -webkit-animation: animatedGradient 10s ease infinite;
   -moz-animation: animatedGradient 10s ease infinite;
@@ -59,8 +87,8 @@ const Container = styled.div`
   }
 `
 const Content = styled.div`
-  /* margin-left: 180px; */
-  padding: 30px 30px 180px;
+  margin-left: 180px;
+  padding: 30px 40px 180px;
   position: relative;
   background-image: url('http://localhost:3000/images/city.svg');
   background-repeat: no-repeat;
@@ -97,6 +125,36 @@ const TableRow = styled.tr`
     padding: 8px 4px;
     border-top: 1px solid #ddd;
     text-align: left;
+    font-size: 14px;
+  }
+`
+const Progress = styled.div`
+`
+const ProgressBg = styled.div`
+  height: 20px;
+  background-color: #fafafa;
+  border-radius: 5px;
+  box-shadow: inset 2px 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  overflow: hidden;
+`
+const ProgressBar = styled.div`
+  height: 100%;
+  &:nth-of-type(1){
+    width: 20%;
+    background-color: blue;
+  }
+  &:nth-of-type(2){
+    width: 34%;
+    background-color: green;
+  }
+  &:nth-of-type(3){
+    width: 14%;
+    background-color: orange;
+  }
+  &:nth-of-type(4){
+    width: 34%;
+    background-color: crimson;
   }
 `
 
@@ -127,12 +185,33 @@ class App extends Component {
     this.fetchRealtimeDatasToState(this.state.selectedCityName);
 
     fetch(`http://localhost:3001/hourly`)
-    .then(res => res.text())
-    .then(text => this.setState({hourlyData: JSON.parse(text)['records']}))
-  
+    .then(res => res.json())
+    .then(json => {
+      this.setState({hourlyData: json['list']});
+    })
+    
     fetch(`http://localhost:3001/daily`)
-    .then(res => res.text())
-    .then(text => this.setState({dailyData: JSON.parse(text)['records']}))
+    .then(res => res.json())
+    .then(json => this.setState({dailyData: json['list']}))
+  }
+
+  getCityData = (obj, value) => {
+    for (let key in obj){
+      if (key === value){
+        return obj[key]
+      }
+    }
+  }
+
+  getCityDataList = () => {
+    const cityData = cityList.reduce((acc, cur) => {
+      acc.push({
+        ...cur, 
+        pm10: this.getCityData(this.state.hourlyData[0], cur.id)
+      })
+      return acc;
+    }, [])
+    return cityData;
   }
   
   // 클릭시 변경
@@ -149,11 +228,10 @@ class App extends Component {
       <div className="App">
         <Normalize/>
         <GlobalStyle/>
-        {/* <h1>소희미세 리스펙 ^-^</h1> */}
-        <Container>
-          {/* <Menu 
-            data={this.state.hourlyData}
-            onClickCity={this.handleClick}></Menu> */}
+        <Container grade={getPm10Grade(this.getCityData(this.state.hourlyData[0], this.state.selectedCityId))}>
+          <Menu 
+            data={this.getCityDataList()}
+            onClickCity={this.handleClick}></Menu>
           <Content>
             <ContentTitle>
               <p>
@@ -166,14 +244,27 @@ class App extends Component {
                 <span className="weak">는</span>
               </p>
               <p>
-                "매우나쁨" <span className="weak">상태입니다.</span>
+                "{getPm10Grade(this.getCityData(this.state.hourlyData[0], this.state.selectedCityId))}" <span className="weak">상태입니다.</span>
               </p>
             </ContentTitle>
             <RealTime
               data={this.state.realtimeData}
               cityName={this.state.selectedCityName}></RealTime>
             <Row>
-              <Col lg={8}>
+              <Col md={12}>
+                <Card>
+                  <Progress>
+                    <ProgressBg>
+                      <ProgressBar></ProgressBar>
+                      <ProgressBar></ProgressBar>
+                      <ProgressBar></ProgressBar>
+                      <ProgressBar></ProgressBar>
+                    </ProgressBg>
+                  </Progress>
+                  (02-20 10:00 기준, 서울 측정소 평균)
+                </Card>
+              </Col>
+              <Col lg={7}>
                 <Card>
                   <CardTitle>시간별 미세먼지 농도</CardTitle>
                   <Chart
@@ -187,14 +278,16 @@ class App extends Component {
                     city={this.state.selectedCityId}></Chart>
                 </Card>
               </Col>
-              <Col lg={4}>
+              <Col lg={5}>
                 <Card>
                   <CardTitle>측정소별 미세먼지 농도</CardTitle>
                   <TableWrapper>
                     <Table>
+                      <tbody>
                       <TableRow>
                         <th>측정소</th>
-                        <th>농도</th>
+                        <th>PM10농도</th>
+                        <th>PM2.5농도</th>
                         <th>등급</th>
                       </TableRow>
                     {this.state.realtimeData.map((e, i) => {
@@ -202,12 +295,13 @@ class App extends Component {
                         <TableRow key={i}>
                           <td>{e.stationName}</td>
                           <td>{e.pm10Value}</td>
+                          <td>{e.pm25Value}</td>
                           <td>
-                            <span className="badge">좋음</span>
+                            <Badge grade={getPm10Grade(e.pm10Value)}>{getPm10Grade(e.pm10Value)}</Badge>
                           </td>
                         </TableRow>
                       )
-                    })}</Table>
+                    })}</tbody></Table>
                   </TableWrapper>
                 </Card>
               </Col>

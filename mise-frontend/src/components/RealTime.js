@@ -5,13 +5,12 @@ import {Col, Row} from 'react-styled-flexboxgrid';
 // 스타일
 const RealTimeData = styled.div`
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 30px;
+  right: 30px;
 `
 // const Visual = styled.div``
 const InfoTable = styled.ul`
   border-radius: 5px;
-  margin-top: 30px;
   color: #fff;
 `
 const InfoKey = styled.h4`
@@ -37,31 +36,31 @@ const InfoGrade = styled.span`
 class RealTime extends Component {
 
   // 평균값 구하기
-  average = (arr, key) => {
-    let result = arr.reduce((acc, cur) => {
-      if (cur[key] === '-'){
-        cur[key] = 0;
-      }
-      acc += cur[key]*1
-      return acc
-    }, 0)
-    result = Math.floor(result/arr.length);
-    return result
-  }
+  // average = (arr, key) => {
+  //   let result = arr.reduce((acc, cur) => {
+  //     if (cur[key] === '-'){
+  //       cur[key] = 0;
+  //     }
+  //     acc += cur[key]*1
+  //     return acc
+  //   }, 0)
+  //   result = Math.floor(result/arr.length);
+  //   return result
+  // }
 
   // 미세먼지 등급 구하기
-  pm10Grade = () => {
-    let value = this.average(this.props.data, 'pm10Value')
-    if (value >= 0 && value <= 30){
-      return '좋음'
-    }else if (value >= 31 && value <= 80){
-      return '보통'
-    }else if (value >= 81 && value <= 100){
-      return '나쁨'
-    }else if (value >= 101){
-      return '매우나쁨'
-    }
-  }
+  // pm10Grade = () => {
+  //   let value = this.average(this.props.data, 'pm10Value')
+  //   if (value >= 0 && value <= 30){
+  //     return '좋음'
+  //   }else if (value >= 31 && value <= 80){
+  //     return '보통'
+  //   }else if (value >= 81 && value <= 100){
+  //     return '나쁨'
+  //   }else if (value >= 101){
+  //     return '매우나쁨'
+  //   }
+  // }
   
   render() {
     const pm25Grade = (value) => {
@@ -83,8 +82,6 @@ class RealTime extends Component {
             <Col>
               <InfoKey>미세먼지(PM10) 농도</InfoKey>
               <InfoValue>30<InfoGrade>㎍/m³</InfoGrade></InfoValue>
-            </Col>
-            <Col>
               <InfoKey>초미세먼지(PM2.5) 농도</InfoKey>
               <InfoValue>42<InfoGrade>㎍/m³</InfoGrade></InfoValue>
             </Col>
