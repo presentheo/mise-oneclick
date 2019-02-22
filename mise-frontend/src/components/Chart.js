@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { getPm25Grade } from '../utils';
 
 const Container = styled.ul`
   display: flex;
@@ -11,7 +12,8 @@ const Value = styled.li`
   text-align: center;
 `
 const ValueTime = styled.h5`
-  margin-top: 4px;
+  margin-bottom: 6px;
+  color: #aaa;
 `
 const ValueBarBg = styled.div`
   width: 100%;
@@ -23,19 +25,19 @@ const ValueBarBg = styled.div`
 `
 const ValueBarFill = styled.div`
   width: 100%;
-  height: ${props => (props.val*2/3) + '%'};
+  height: ${props => props.val + '%'};
   max-height: 100%;
   min-height: 30px;
   background-color: ${
     props => {
-      let value = props.val;
-      if (value >= 0 && value <= 30){
+      let grade = getPm25Grade(props.val);
+      if (grade === '좋음'){
         return 'royalblue'
-      }else if (value >= 31 && value <= 80){
+      }else if (grade === '보통'){
         return 'green'
-      }else if (value >= 81 && value <= 150){
+      }else if (grade === '나쁨'){
         return 'orange'
-      }else if (value >= 151){
+      }else if (grade === '매우나쁨'){
         return 'crimson'
       }
     }
@@ -56,12 +58,12 @@ class Chart extends Component {
         {this.props.data.map((e,i) => {
           return (
             <Value key={i}>
+              <ValueTime>{e['dataTime'].substr(5)}</ValueTime>
               <ValueBarBg>
                 <ValueBarFill val={e[this.props.city]}>
                   <ValueBarValue>{e[this.props.city]}</ValueBarValue>
                 </ValueBarFill>
               </ValueBarBg>
-              <ValueTime>{e['dataTime'].substr(5)}</ValueTime>
             </Value>
           )
         })}

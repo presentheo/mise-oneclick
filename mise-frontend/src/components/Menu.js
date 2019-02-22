@@ -1,17 +1,27 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { getPm10Grade } from '../utils';
+import { getPm25Grade } from '../utils';
 import { Badge } from '../App';
 
+const MenuCover = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  /* background-color: rgba(0,0,0,0.4); */
+  z-index: 5;
+  display: ${props => props.open ? 'block' : 'none'};
+`
 const MenuList = styled.ul`
   position: fixed;
   height: 100%;
   top: 0;
-  left: 0;
+  right: ${props => props.open ? '0px' : '-200px'};
   overflow: auto;
   min-width: 180px;
-  z-index: 1;
+  z-index: 6;
   background-color: #fff;
+  box-shadow: -4px 0 6px rgba(0,0,0,0.4);
+  transition: right 0.4s ease;
 `
 const MenuItem = styled.li`
   padding: 15px 10px 15px 20px;
@@ -38,29 +48,26 @@ const MenuItemValue = styled.p`
   margin-bottom: 6px;
 `
 class Menu extends Component {
-  // constructor(props){
-  //   super(props);
-  //   this.state = {
-  //     data: cityList
-  //   }
-  // }
   render() {
     return (
-      <MenuList>
-        {this.props.data.map((e, i) => {
-          return (
-            <MenuItem
+      <div>
+        <MenuList open={this.props.open}>
+          {this.props.data.map((e, i) => {
+            return (
+              <MenuItem
               key={i}
               onClick={() => this.props.onClickCity(e.id, e.name)}>
-              <MenuItemTitle>{e.name}</MenuItemTitle>
-              <MenuItemContent>
-                <MenuItemValue>{e.pm10}㎍/m³</MenuItemValue>
-                <Badge grade={getPm10Grade(e.pm10)}>{getPm10Grade(e.pm10)}</Badge>
-              </MenuItemContent>
-            </MenuItem>
-          )
-        })}
-      </MenuList>
+                <MenuItemTitle>{e.name}</MenuItemTitle>
+                <MenuItemContent>
+                  <MenuItemValue>{e.pm25}㎍/m³</MenuItemValue>
+                  <Badge grade={getPm25Grade(e.pm25)}>{getPm25Grade(e.pm25)}</Badge>
+                </MenuItemContent>
+              </MenuItem>
+            )
+          })}
+        </MenuList>
+        <MenuCover open={this.props.open} onClick={this.props.onCloseMenu}></MenuCover>
+      </div>
     );
   }
 }
