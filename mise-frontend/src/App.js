@@ -37,6 +37,7 @@ const GlobalStyle = createGlobalStyle`
     list-style: none;
   }
   .weak{font-weight: 100;}
+  div{box-sizing: border-box}
 
   body::-webkit-scrollbar {
     width: 8px;
@@ -119,7 +120,8 @@ const ContentTitle = styled.h1`
   font-size: 5em;
   color: #fff;
   @media (max-width: 768px){
-    font-size: 2em;
+    font-size: 2.4em;
+    letter-spacing: -3px;
   }
 `
 const Card = styled.div`
@@ -150,56 +152,38 @@ const TableRow = styled.tr`
   }
 `
 const Button = styled.button`
-  background-image: none;
-  background-color: inherit;
-  padding: 8px 12px;
+  width: auto;
+  padding: 12px 20px;
+  background-color: #fff;
   border: 0;
-  border-radius: 5px;
+  border-radius: 5px 0 0 5px;
   position: absolute;
   top: 30px;
-  right : 30px;
-  color: #fff;
+  right : 0px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
   cursor: pointer;
-`
-const Progress = styled.div`
-  position: relative;
-`
-const ProgressBg = styled.div`
-  background-color: #fafafa;
-  border-radius: 5px;
-  box-shadow: inset 2px 2px 4px rgba(0,0,0,0.1);
-  display: flex;
-  overflow: hidden;
-`
-const ProgressBar = styled.div`
-  padding: 3px 0;
-  font-size: 12px;
-  color: #fff;
-  text-align: center;
-  &:nth-of-type(1){
-    width: 15%;
-    background-color: blue;
+  font-weight: 800;
+  color: #444;
+  transition: padding-right 0.2s ease;
+  &:hover{
+    padding-right: 30px;
   }
-  &:nth-of-type(2){
-    width: 20%;
-    background-color: green;
+  &>span{
+    display: inline-block;
+    vertical-align: middle;
   }
-  &:nth-of-type(3){
-    width: 40%;
-    background-color: orange;
+  &>img{
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+    margin-right: 4px;
   }
-  &:nth-of-type(4){
-    width: 25%;
-    background-color: crimson;
+  @media (max-width: 768px){
+    top: 10px;
+    padding: 8px 16px;
+    font-size: 12px;
   }
-`
-const ProgressPointer = styled.div`
-  width: 4px; 
-  height: 24px;
-  background-color: #fff;
-  box-shadow: 1px 2px 8px rgba(0,0,0,0.7);
-  position: absolute;
-  bottom: 0;
 `
 
 class App extends Component {
@@ -281,7 +265,9 @@ class App extends Component {
             data={this.getCityDataList()}
             onClickCity={this.handleClick}></Menu>
           <Content>
-            <Button onClick={() => this.setState({menuIsOpen: !this.state.menuIsOpen})}>다른 지역 확인</Button>
+            <Button onClick={() => this.setState({menuIsOpen: !this.state.menuIsOpen})}>
+              <img src="/images/menu.svg" alt="left arrow"></img><span> 다른 지역 확인</span>
+            </Button>
             <ContentTitle>
               <p>
                 <span className="weak">지금 </span>
@@ -300,7 +286,7 @@ class App extends Component {
               ({this.state.hourlyData[0] ? this.state.hourlyData[0].dataTime : '0000-00-00 00:00'} 기준, {this.state.selectedCityName} 측정소 평균)
             </p>
             <Row>
-              <Col lg={7}>
+              <Col md={7} xs={12}>
                 <Card>
                   <CardTitle>시간별 미세먼지 농도</CardTitle>
                   <Chart
@@ -314,7 +300,7 @@ class App extends Component {
                     city={this.state.selectedCityId}></Chart>
                 </Card>
               </Col>
-              <Col lg={5}>
+              <Col md={5} xs={12}>
                 <Card>
                   <CardTitle>측정소별 미세먼지 농도</CardTitle>
                   <TableWrapper>

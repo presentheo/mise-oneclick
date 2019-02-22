@@ -20,7 +20,7 @@ const MenuList = styled.ul`
   min-width: 180px;
   z-index: 6;
   background-color: #fff;
-  box-shadow: -4px 0 6px rgba(0,0,0,0.4);
+  box-shadow: -4px 0 12px rgba(0,0,0,0.4);
   transition: right 0.4s ease;
 `
 const MenuItem = styled.li`

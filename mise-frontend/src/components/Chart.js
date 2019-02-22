@@ -5,6 +5,8 @@ import { getPm25Grade } from '../utils';
 const Container = styled.ul`
   display: flex;
   flex-direction: row-reverse;
+  max-width: 100%;
+  overflow:auto;
 `
 const Value = styled.li`
   width: 100%;
