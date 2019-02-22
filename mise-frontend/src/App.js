@@ -105,7 +105,7 @@ const Content = styled.div`
   width: 100%;
   padding: 30px 40px 180px;
   position: relative;
-  background-image: url('http://localhost:3000/images/city.svg');
+  background-image: url('https://presentheo.github.io/projects/mise-oneclick/images/city.svg');
   background-repeat: no-repeat;
   background-size: contain;
   background-attachment: fixed;
@@ -266,7 +266,7 @@ class App extends Component {
             onClickCity={this.handleClick}></Menu>
           <Content>
             <Button onClick={() => this.setState({menuIsOpen: !this.state.menuIsOpen})}>
-              <img src="/images/menu.svg" alt="left arrow"></img><span> 다른 지역 확인</span>
+              <img src="https://presentheo.github.io/projects/mise-oneclick/images/menu.svg" alt="left arrow"></img><span> 다른 지역 확인</span>
             </Button>
             <ContentTitle>
               <p>

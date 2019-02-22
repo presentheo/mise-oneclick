@@ -18,7 +18,7 @@ class Loading extends Component {
   render() {
     return (
       <LoadingBg display={this.props.display}>
-        <LoadingImage src="/images/loading.svg"></LoadingImage>
+        <LoadingImage src="https://presentheo.github.io/projects/mise-oneclick/images/loading.svg"></LoadingImage>
       </LoadingBg>
     );
   }
