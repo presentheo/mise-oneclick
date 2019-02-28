@@ -272,9 +272,6 @@ class App extends Component {
             open={this.state.menuIsOpen}
             data={this.getCityDataList()}
             onClickCity={this.handleClick}></Menu>
-          <Button onClick={() => this.setState({menuIsOpen: !this.state.menuIsOpen})}>
-            <img src="https://presentheo.github.io/projects/mise-oneclick/images/menu.svg" alt="left arrow"></img><span> 다른 지역 확인</span>
-          </Button>
           <ContentBg>
             <Content>
               <ContentTitle>
@@ -337,6 +334,9 @@ class App extends Component {
               </Row>
             </Content>
           </ContentBg>
+          <Button onClick={() => this.setState({menuIsOpen: !this.state.menuIsOpen})}>
+            <img src="https://presentheo.github.io/projects/mise-oneclick/images/menu.svg" alt="left arrow"></img><span> 다른 지역 확인</span>
+          </Button>
         </Container>
         
       </div>

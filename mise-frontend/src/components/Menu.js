@@ -14,7 +14,7 @@ const MenuList = styled.ul`
   position: fixed;
   height: 100%;
   top: 0;
-  right: ${props => props.open ? '0px' : '-200px'};
+  right: ${props => props.open ? '0px' : '-220px'};
   overflow: auto;
   min-width: 180px;
   z-index: 6;

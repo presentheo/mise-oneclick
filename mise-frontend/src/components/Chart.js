@@ -47,6 +47,8 @@ const ValueBarFill = styled.div`
         return 'orange'
       }else if (grade === '매우나쁨'){
         return 'crimson'
+      }else if (grade === '정보없음'){
+        return 'gray'
       }
     }
   };

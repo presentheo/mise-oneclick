@@ -21,7 +21,7 @@
       return '나쁨'
     }else if (value >= 76){
       return '매우나쁨'
-    }else if (value === '-' || value === undefined){
+    }else if (value === "-" || value === "" || value === undefined){
       return '정보없음'
     }
   }
