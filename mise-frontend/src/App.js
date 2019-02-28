@@ -102,25 +102,30 @@ const Container = styled.div`
   }
 `
 const Content = styled.div`
+  max-width: 1800px;
+  margin: auto;
   width: 100%;
   padding: 30px 40px 180px;
   position: relative;
+  @media (max-width: 768px){
+    margin: 0;
+    padding: 20px 20px 180px;
+  }
+`
+const ContentBg = styled.div`
+  width: 100%;
   background-image: url('https://presentheo.github.io/projects/mise-oneclick/images/city.svg');
   background-repeat: no-repeat;
   background-size: contain;
   background-attachment: fixed;
   background-position: bottom;
-  @media (max-width: 768px){
-    margin: 0;
-    padding: 20px 20px 180px;
-  }
 `
 const ContentTitle = styled.h1`
   letter-spacing: -7px;
   font-size: 5em;
   color: #fff;
   @media (max-width: 768px){
-    font-size: 2.4em;
+    font-size: 2.3em;
     letter-spacing: -3px;
   }
 `
@@ -134,6 +139,9 @@ const Card = styled.div`
 const CardTitle = styled.h2`
   margin-bottom: 20px;
   color: #444;
+  @media (max-width: 768px){
+    font-size: 20px;
+  }
 `
 const TableWrapper = styled.div`
   max-height: 600px;
@@ -264,69 +272,71 @@ class App extends Component {
             open={this.state.menuIsOpen}
             data={this.getCityDataList()}
             onClickCity={this.handleClick}></Menu>
-          <Content>
-            <Button onClick={() => this.setState({menuIsOpen: !this.state.menuIsOpen})}>
-              <img src="https://presentheo.github.io/projects/mise-oneclick/images/menu.svg" alt="left arrow"></img><span> 다른 지역 확인</span>
-            </Button>
-            <ContentTitle>
-              <p>
-                <span className="weak">지금 </span>
-                {this.state.selectedCityName}
-                <span className="weak">의 </span>
+          <Button onClick={() => this.setState({menuIsOpen: !this.state.menuIsOpen})}>
+            <img src="https://presentheo.github.io/projects/mise-oneclick/images/menu.svg" alt="left arrow"></img><span> 다른 지역 확인</span>
+          </Button>
+          <ContentBg>
+            <Content>
+              <ContentTitle>
+                <p>
+                  <span className="weak">지금 </span>
+                  {this.state.selectedCityName}
+                  <span className="weak">의 </span>
+                </p>
+                <p>
+                  미세먼지
+                  <span className="weak"> 농도는</span>
+                </p>
+                <p>
+                  "{getPm25Grade(this.getCityData(this.state.hourlyData[0], this.state.selectedCityId))}" <span className="weak">상태입니다.</span>
+                </p>
+              </ContentTitle>
+              <p style={{color: '#fff', fontSize: '16px', marginTop: '14px'}}>
+                ({this.state.hourlyData[0] ? this.state.hourlyData[0].dataTime : '0000-00-00 00:00'} 기준, {this.state.selectedCityName} 측정소 평균)
               </p>
-              <p>
-                미세먼지
-                <span className="weak"> 농도는</span>
-              </p>
-              <p>
-                "{getPm25Grade(this.getCityData(this.state.hourlyData[0], this.state.selectedCityId))}" <span className="weak">상태입니다.</span>
-              </p>
-            </ContentTitle>
-            <p style={{color: '#fff', fontSize: '16px', marginTop: '14px'}}>
-              ({this.state.hourlyData[0] ? this.state.hourlyData[0].dataTime : '0000-00-00 00:00'} 기준, {this.state.selectedCityName} 측정소 평균)
-            </p>
-            <Row>
-              <Col md={7} xs={12}>
-                <Card>
-                  <CardTitle>시간별 미세먼지 농도</CardTitle>
-                  <Chart
-                    data={this.state.hourlyData}
-                    city={this.state.selectedCityId}></Chart>
-                </Card>
-                <Card>
-                  <CardTitle>일간 미세먼지 농도</CardTitle>
-                  <Chart
-                    data={this.state.dailyData}
-                    city={this.state.selectedCityId}></Chart>
-                </Card>
-              </Col>
-              <Col md={5} xs={12}>
-                <Card>
-                  <CardTitle>측정소별 미세먼지 농도</CardTitle>
-                  <TableWrapper>
-                    <Table>
-                      <tbody>
-                      <TableRow>
-                        <th>측정소</th>
-                        <th>농도(㎍/m³)</th>
-                        <th>등급</th>
-                      </TableRow>
-                    {this.state.realtimeData.map((e, i) => {
-                      return (
-                        <TableRow key={i}>
-                          <td>{e.stationName}</td>
-                          <td>{e.pm25Value}</td>
-                          <td>
-                            <Badge grade={getPm25Grade(e.pm25Value)}>{getPm25Grade(e.pm25Value)}</Badge>
-                          </td>
+              <Row>
+                <Col md={7} xs={12}>
+                  <Card>
+                    <CardTitle>시간별 미세먼지 농도</CardTitle>
+                    <Chart
+                      data={this.state.hourlyData}
+                      city={this.state.selectedCityId}></Chart>
+                  </Card>
+                  <Card>
+                    <CardTitle>일간 미세먼지 농도</CardTitle>
+                    <Chart
+                      data={this.state.dailyData}
+                      city={this.state.selectedCityId}></Chart>
+                  </Card>
+                </Col>
+                <Col md={5} xs={12}>
+                  <Card>
+                    <CardTitle>측정소별 미세먼지 농도</CardTitle>
+                    <TableWrapper>
+                      <Table>
+                        <tbody>
+                        <TableRow>
+                          <th>측정소</th>
+                          <th>농도(㎍/m³)</th>
+                          <th>등급</th>
                         </TableRow>
-                      )
-                    })}</tbody></Table>
-                  </TableWrapper>
-                </Card>
-              </Col>
-            </Row>
-          </Content>
+                      {this.state.realtimeData.map((e, i) => {
+                        return (
+                          <TableRow key={i}>
+                            <td>{e.stationName}</td>
+                            <td>{e.pm25Value}</td>
+                            <td>
+                              <Badge grade={getPm25Grade(e.pm25Value)}>{getPm25Grade(e.pm25Value)}</Badge>
+                            </td>
+                          </TableRow>
+                        )
+                      })}</tbody></Table>
+                    </TableWrapper>
+                  </Card>
+                </Col>
+              </Row>
+            </Content>
+          </ContentBg>
         </Container>
         
       </div>

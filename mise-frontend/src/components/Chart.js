@@ -16,6 +16,9 @@ const Value = styled.li`
 const ValueTime = styled.h5`
   margin-bottom: 6px;
   color: #aaa;
+  @media (max-width: 768px){
+    font-size: 12px;
+  }
 `
 const ValueBarBg = styled.div`
   width: 100%;
@@ -24,6 +27,9 @@ const ValueBarBg = styled.div`
   border-radius: 5px 5px 0 0;
   box-shadow: inset 2px 2px 4px rgba(0,0,0,0.1);
   position: relative;
+  @media (max-width: 768px){
+    height: 180px;
+  }
 `
 const ValueBarFill = styled.div`
   width: 100%;
@@ -51,6 +57,9 @@ const ValueBarFill = styled.div`
 const ValueBarValue = styled.p`
   margin-top: 8px;
   color: #fff;
+  @media (max-width: 768px){
+    font-size: 12px;
+  }
 `
 
 class Chart extends Component {
